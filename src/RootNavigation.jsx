@@ -4,7 +4,8 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import LoginScreen from './screens/Auth/Login';
 import SignUpScreen from './screens/Auth/Signup';
-import Feed from './screens/Main/Feed';
+import TabNavigation from './screens/Main/TabNavigation';
+import ProductInfo from './components/ProductInfo';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,7 +17,8 @@ const RootNavigation = () => {
         screenOptions={{headerShown: false}}>
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Signup" component={SignUpScreen} />
-        <Stack.Screen name="Main" component={Feed} />
+        <Stack.Screen name="Main" component={TabNavigation} />
+        <Stack.Screen name="ProductInfo" component={ProductInfo} />
       </Stack.Navigator>
     </NavigationContainer>
   );
