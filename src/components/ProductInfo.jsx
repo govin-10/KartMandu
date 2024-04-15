@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -7,15 +7,28 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
+import {useSelector, useDispatch} from 'react-redux';
+import {increment} from '../../redux/features/counter/counterSlice';
+import {addToCart} from '../../redux/features/cart/cartSlice';
 
 const ProductInfo = ({route}) => {
   const product = route.params.productItem;
   const {title, price, description, image, rating} = product;
-  console.log(title, price, description, image, rating);
 
-  //   const handleAddToCart = () => {
-  //     // Implement your logic for adding the product to cart
-  //   };
+  const [addedToCart, setAddedToCart] = useState(false);
+
+  const count = useSelector(state => state.counter.value);
+  const cart = useSelector(state => state.cart.cart);
+  console.log('cart: ', cart);
+  const dispatch = useDispatch();
+
+  const handleAddToCart = item => {
+    setAddedToCart(true);
+    dispatch(addToCart(item));
+    setTimeout(() => {
+      setAddedToCart(false);
+    }, 2000);
+  };
 
   //   // Calculate the number of filled stars based on the rating rate
   //   const filledStars = Math.round(rating.rate);
@@ -52,8 +65,19 @@ const ProductInfo = ({route}) => {
         </View>
         <Text style={styles.price}>${price}</Text>
         <Text style={styles.description}>{description}</Text>
-        <TouchableOpacity style={styles.addToCartButton}>
+        <TouchableOpacity
+          style={styles.addToCartButton}
+          onPress={() => handleAddToCart(product)}>
           <Text style={styles.addToCartButtonText}>Add to Cart</Text>
+        </TouchableOpacity>
+      </View>
+      <View>
+        <Text>{count}</Text>
+        <TouchableOpacity
+          onPress={() => {
+            dispatch(increment());
+          }}>
+          <Text> Increase</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>

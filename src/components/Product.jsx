@@ -1,7 +1,23 @@
 import {StyleSheet, Text, View, Image, TouchableOpacity} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {addToCart} from '../../redux/features/cart/cartSlice';
 
 const Product = ({productItem, index, navigation}) => {
+  const [addedToCart, setAddedToCart] = useState(false);
+
+  const cart = useSelector(state => state.cart.cart);
+  console.log('cart: ', cart);
+  const dispatch = useDispatch();
+
+  const handleAddToCart = item => {
+    setAddedToCart(true);
+    dispatch(addToCart(item));
+    setTimeout(() => {
+      setAddedToCart(false);
+    }, 2000);
+  };
+
   //   const product = productItem.item;
   //   console.log('item', product);
   return (
@@ -21,8 +37,7 @@ const Product = ({productItem, index, navigation}) => {
       </View>
       <TouchableOpacity
         style={styles.addToCartButton}
-        // onPress={onPressAddToCart}
-      >
+        onPress={() => handleAddToCart(productItem)}>
         <Text style={styles.addToCartButtonText}>Add to Cart</Text>
       </TouchableOpacity>
     </View>

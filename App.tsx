@@ -6,11 +6,15 @@
  */
 
 import React from 'react';
-import {SafeAreaView} from 'react-native';
 import RootNavigation from './src/RootNavigation';
-
+import {store} from './redux/store/store';
+import {Provider} from 'react-redux';
 function App(): React.JSX.Element {
-  return <RootNavigation />;
+  return (
+    <Provider store={store}>
+      <RootNavigation />
+    </Provider>
+  );
 }
 
 export default App;
