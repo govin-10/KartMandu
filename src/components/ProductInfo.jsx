@@ -8,8 +8,11 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {increment} from '../../redux/features/counter/counterSlice';
+import {increment} from '../../redux/features/quantityCounter/counterSlice';
 import {addToCart} from '../../redux/features/cart/cartSlice';
+import {BASE_URL, SERVER_PORT} from '@env';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 const ProductInfo = ({route}) => {
   const product = route.params.productItem;
@@ -19,17 +22,26 @@ const ProductInfo = ({route}) => {
 
   const count = useSelector(state => state.counter.value);
   const cart = useSelector(state => state.cart.cart);
-  console.log('cart: ', cart);
   const dispatch = useDispatch();
 
   const handleAddToCart = item => {
     setAddedToCart(true);
     dispatch(addToCart(item));
+
+    addToCarts(item);
     setTimeout(() => {
       setAddedToCart(false);
     }, 2000);
   };
 
+  const addToCarts = async productItem => {
+    const token = await AsyncStorage.getItem('authToken');
+    await axios.post(`${BASE_URL}:${SERVER_PORT}/cart/add`, productItem, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  };
   //   // Calculate the number of filled stars based on the rating rate
   //   const filledStars = Math.round(rating.rate);
   //   // Calculate the number of empty stars

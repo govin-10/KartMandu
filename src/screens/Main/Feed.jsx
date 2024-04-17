@@ -21,6 +21,7 @@ const Feed = ({navigation}) => {
       try {
         const response = await axios.get('https://fakestoreapi.com/products');
         const datas = await response.data;
+
         setProducts(datas);
       } catch (error) {}
     };

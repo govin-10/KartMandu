@@ -6,6 +6,7 @@ import LoginScreen from './screens/Auth/Login';
 import SignUpScreen from './screens/Auth/Signup';
 import TabNavigation from './screens/Main/TabNavigation';
 import ProductInfo from './components/ProductInfo';
+import PaymentPage from './components/PaymentPage';
 
 const Stack = createNativeStackNavigator();
 
