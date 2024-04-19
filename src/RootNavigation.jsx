@@ -6,7 +6,7 @@ import LoginScreen from './screens/Auth/Login';
 import SignUpScreen from './screens/Auth/Signup';
 import TabNavigation from './screens/Main/TabNavigation';
 import ProductInfo from './components/ProductInfo';
-import PaymentPage from './components/PaymentPage';
+import EditAddress from './screens/EditAddress';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,6 +20,7 @@ const RootNavigation = () => {
         <Stack.Screen name="Signup" component={SignUpScreen} />
         <Stack.Screen name="Main" component={TabNavigation} />
         <Stack.Screen name="ProductInfo" component={ProductInfo} />
+        <Stack.Screen name="EditAddress" component={EditAddress} />
       </Stack.Navigator>
     </NavigationContainer>
   );

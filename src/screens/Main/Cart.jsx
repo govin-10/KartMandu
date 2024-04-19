@@ -33,6 +33,7 @@ const Cart = () => {
     const fetchCart = async () => {
       try {
         const token = await AsyncStorage.getItem('authToken');
+        console.log(SERVER_PORT);
         const cartInfo = await axios.get(
           `${BASE_URL}:${SERVER_PORT}/cart/get`,
           {
