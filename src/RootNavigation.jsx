@@ -7,6 +7,8 @@ import SignUpScreen from './screens/Auth/Signup';
 import TabNavigation from './screens/Main/TabNavigation';
 import ProductInfo from './components/ProductInfo';
 import EditAddress from './screens/EditAddress';
+import PaymentPage from './screens/EPay/PaymentPage';
+import {PaymentSheet} from '@stripe/stripe-react-native';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +23,7 @@ const RootNavigation = () => {
         <Stack.Screen name="Main" component={TabNavigation} />
         <Stack.Screen name="ProductInfo" component={ProductInfo} />
         <Stack.Screen name="EditAddress" component={EditAddress} />
+        <Stack.Screen name="PaymentPage" component={PaymentPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );

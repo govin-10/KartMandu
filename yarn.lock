@@ -1985,6 +1985,11 @@
   dependencies:
     "@sinonjs/commons" "^3.0.0"
 
+"@stripe/stripe-react-native@^0.37.3":
+  "integrity" "sha512-9OReixY4bP3ogHUoAmDs+FRKxTCCDz6APep6fn8LAzs5xG5IGDetFb7UlZkigFYqtJgbe3+n4kMS5wIcxKgnLQ=="
+  "resolved" "https://registry.npmjs.org/@stripe/stripe-react-native/-/stripe-react-native-0.37.3.tgz"
+  "version" "0.37.3"
+
 "@types/babel__core@^7.1.14":
   "integrity" "sha512-qoQprZvz5wQFJwMDqeseRXWv3rqMvhgpbXFfVyWhbx9X47POIA6i/+dXefEmZKoAgOaTdaIgNSMqMIU61yRyzA=="
   "resolved" "https://registry.npmjs.org/@types/babel__core/-/babel__core-7.20.5.tgz"

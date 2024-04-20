@@ -34,6 +34,7 @@ const Cart = () => {
       try {
         const token = await AsyncStorage.getItem('authToken');
         console.log(SERVER_PORT);
+
         const cartInfo = await axios.get(
           `${BASE_URL}:${SERVER_PORT}/cart/get`,
           {
@@ -90,12 +91,18 @@ const Cart = () => {
     } catch (error) {}
   };
 
+  const handleProceedPayment = () => {
+    navigation.navigate('PaymentPage', {cartItems, totalAmount: total});
+  };
+
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.title}> Your Cart</Text>
       <View>
         <Text>{total}</Text>
-        <Text>Proceed</Text>
+        <Pressable onPress={handleProceedPayment}>
+          <Text>Proceed</Text>
+        </Pressable>
       </View>
       {cartItems.map(item => (
         <View key={item.id} style={styles.cartItem}>
