@@ -12,6 +12,7 @@ import {
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL, SERVER_PORT} from '@env';
+import SplashScreen from 'react-native-splash-screen';
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -24,6 +25,11 @@ const LoginScreen = ({navigation}) => {
 
       if (token) {
         navigation.replace('Main');
+        setTimeout(() => {
+          SplashScreen.hide();
+        }, 1000);
+      } else {
+        SplashScreen.hide();
       }
     };
     checkAuthToken();
