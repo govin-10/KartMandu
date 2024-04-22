@@ -8,13 +8,11 @@ import {
   Image,
   ScrollView,
   Pressable,
+  ActivityIndicator,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-// import { i, decrementQuantity } from '../../../redux/features/cart/cartSlice';
-// import {
-//   increment,
-//   decrement,
-// } from '../../../redux/features/quantityCounter/counterSlice';
+import CheckoutIcon from 'react-native-vector-icons/MaterialIcons';
+import DeleteIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {BASE_URL, SERVER_PORT} from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {removeFromCart} from '../../../redux/features/cart/cartSlice';
@@ -25,12 +23,14 @@ const Cart = () => {
 
   const [counts, setCounts] = useState({});
   const [cartItems, setCartItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const cart = useSelector(state => state.cart.cart);
   const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchCart = async () => {
+      setIsLoading(true);
       try {
         const token = await AsyncStorage.getItem('authToken');
         console.log(SERVER_PORT);
@@ -48,6 +48,8 @@ const Cart = () => {
         setCartItems(carts);
       } catch (error) {
         console.error('Error fetching cart:', error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -98,44 +100,56 @@ const Cart = () => {
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.title}> Your Cart</Text>
-      <View>
-        <Text>{total}</Text>
-        <Pressable onPress={handleProceedPayment}>
-          <Text>Proceed</Text>
-        </Pressable>
-      </View>
-      {cartItems.map(item => (
-        <View key={item.id} style={styles.cartItem}>
-          <Image source={{uri: item.image}} style={styles.itemImage} />
-          <View style={styles.itemInfo}>
-            <View>
-              <Text style={styles.itemName}>{item.title}</Text>
-              <Text style={styles.itemPrice}>{item.price}</Text>
-            </View>
-            <View style={styles.optionBox}>
-              <View style={styles.quantityController}>
-                <TouchableOpacity onPress={() => decrement(item.id)}>
-                  <Text style={styles.quantityButton}>-</Text>
-                </TouchableOpacity>
-                <Text style={styles.quantity}>{counts[item.id] || 1}</Text>
-                <TouchableOpacity onPress={() => increment(item.id)}>
-                  <Text style={styles.quantityButton}>+</Text>
-                </TouchableOpacity>
-              </View>
-              <View>
-                <Pressable onPress={() => handleRemoveFromCart(item)}>
-                  <Text>Delete</Text>
-                </Pressable>
-                <Pressable
-                // onPress={() => navigation.navigate('Pay')}
-                >
-                  <Text>Buy</Text>
-                </Pressable>
-              </View>
-            </View>
+      {isLoading ? (
+        <ActivityIndicator size={'large'} />
+      ) : (
+        <View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginVertical: 10,
+            }}>
+            <Text style={{fontSize: 25, color: 'black', fontWeight: 900}}>
+              ${total}
+            </Text>
+            <Pressable onPress={handleProceedPayment}>
+              <CheckoutIcon
+                name="shopping-cart-checkout"
+                size={30}
+                color="green"
+              />
+            </Pressable>
           </View>
+          {cartItems.map(item => (
+            <View key={item.id} style={styles.cartItem}>
+              <Image source={{uri: item.image}} style={styles.itemImage} />
+              <View style={styles.itemInfo}>
+                <View>
+                  <Text style={styles.itemName}>{item.title}</Text>
+                  <Text style={styles.itemPrice}>${item.price}</Text>
+                </View>
+                <View style={styles.optionBox}>
+                  <View style={styles.quantityController}>
+                    <TouchableOpacity onPress={() => decrement(item.id)}>
+                      <Text style={styles.quantityButton}>-</Text>
+                    </TouchableOpacity>
+                    <Text style={styles.quantity}>{counts[item.id] || 1}</Text>
+                    <TouchableOpacity onPress={() => increment(item.id)}>
+                      <Text style={styles.quantityButton}>+</Text>
+                    </TouchableOpacity>
+                  </View>
+
+                  <Pressable onPress={() => handleRemoveFromCart(item)}>
+                    <DeleteIcon name="delete" size={20} color="red" />
+                  </Pressable>
+                </View>
+              </View>
+            </View>
+          ))}
         </View>
-      ))}
+      )}
     </ScrollView>
   );
 };
@@ -163,6 +177,7 @@ const styles = StyleSheet.create({
   itemInfo: {
     flex: 1,
     flexDirection: 'column',
+    justifyContent: 'space-between',
   },
   itemName: {
     fontSize: 18,

@@ -8,7 +8,6 @@ import TabNavigation from './screens/Main/TabNavigation';
 import ProductInfo from './components/ProductInfo';
 import EditAddress from './screens/EditAddress';
 import PaymentPage from './screens/EPay/PaymentPage';
-import {PaymentSheet} from '@stripe/stripe-react-native';
 
 const Stack = createNativeStackNavigator();
 

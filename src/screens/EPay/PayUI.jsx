@@ -4,14 +4,15 @@ import {
   createToken,
   payments,
 } from '@stripe/stripe-react-native';
-// import { confirmPayment } from '@stripe/stripe-react-native';
 import axios from 'axios';
 import {useState} from 'react';
-import {Pressable, Text, View} from 'react-native';
+import {Alert, Pressable, StyleSheet, Text, View} from 'react-native';
 import {BASE_URL, SERVER_PORT} from '@env';
+import {useNavigation} from '@react-navigation/native';
 // import { createToken } from '@stripe/stripe-react-native';
 
 export default function PayUI({payAmount, ItemDetails}) {
+  const navigation = useNavigation();
   const {confirmPayment} = useStripe();
   const [cardInfo, setCardInfo] = useState(null);
   console.log('ppp', payAmount);
@@ -47,11 +48,14 @@ export default function PayUI({payAmount, ItemDetails}) {
       const resp = await paymentIntentHit.data;
 
       if (resp?.paymentIntent) {
-        const payConfirm = await confirmPayment(resp?.paymentIntent, {
+        await confirmPayment(resp?.paymentIntent, {
           paymentMethodType: 'Card',
           paymentMethodData: cardDetails,
         });
-        console.log(payConfirm);
+
+        Alert.alert('Payment Success');
+
+        navigation.navigate('Feed');
       }
     } catch (error) {
       console.log(error);
@@ -67,8 +71,10 @@ export default function PayUI({payAmount, ItemDetails}) {
   //   };
 
   return (
-    <>
-      <Text>Pay WIth Card</Text>
+    <View style={styles.pageWrapper}>
+      <Text style={{color: 'black', fontSize: 20, fontWeight: 'bold'}}>
+        Pay WIth Card
+      </Text>
       <CardField
         postalCodeEnabled={false}
         placeholders={{
@@ -81,7 +87,7 @@ export default function PayUI({payAmount, ItemDetails}) {
         style={{
           width: '100%',
           height: 50,
-          marginVertical: 30,
+          marginVertical: 20,
         }}
         onCardChange={cardDetails => {
           fetchCardDetail(cardDetails);
@@ -90,9 +96,29 @@ export default function PayUI({payAmount, ItemDetails}) {
           console.log('focusField', focusedField);
         }}
       />
-      <Pressable onPress={() => handleSubmit(cardInfo)}>
-        <Text>Pay</Text>
+      <Pressable
+        onPress={() => handleSubmit(cardInfo)}
+        style={styles.confirmButton}>
+        <Text
+          style={{
+            color: 'black',
+            fontSize: 20,
+            fontWeight: 'bold',
+            textAlign: 'center',
+          }}>
+          Confirm Payment
+        </Text>
       </Pressable>
-    </>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  pageWrapper: {
+    marginTop: 30,
+  },
+  confirmButton: {
+    backgroundColor: 'orange',
+    padding: 10,
+  },
+});

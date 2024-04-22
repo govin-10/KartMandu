@@ -1,4 +1,11 @@
-import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
+import {
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  ActivityIndicator,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import {BASE_URL, SERVER_PORT} from '@env';
@@ -11,6 +18,7 @@ import {useSelector, useDispatch} from 'react-redux';
 const Profile = () => {
   const [profileEdited, setProfileEdited] = useState(false);
   const [userData, setUserData] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
 
   const navigation = useNavigation();
 
@@ -21,6 +29,7 @@ const Profile = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
+        setIsLoading(true);
         console.log(BASE_URL);
         const token = await AsyncStorage.getItem('authToken');
         const userDatas = await axios.get(
@@ -35,7 +44,10 @@ const Profile = () => {
         const data = await userDatas.data;
 
         setUserData(data.user);
-      } catch (error) {}
+      } catch (error) {
+      } finally {
+        setIsLoading(false);
+      }
     };
     setTimeout(() => {
       fetchUserData();
@@ -55,32 +67,37 @@ const Profile = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Profile</Text>
-      <View style={styles.header}>
-        {userData.avatar ? (
-          <Image source={userData.avatar} />
-        ) : (
-          <PersonIcon name="person" size={90} style={styles.defaultPhoto} />
-        )}
-        <Text style={{color: 'black', fontSize: 20}}>{userData.name}</Text>
-      </View>
-      <View style={styles.addressView}>
-        <View style={styles.addressHeader}>
-          <Text style={{fontSize: 20}}>Address</Text>
-          <Pressable onPress={handleEditAddress}>
-            <EditIcon name="edit" size={25} />
-          </Pressable>
+      {isLoading ? (
+        <ActivityIndicator size={'large'} />
+      ) : (
+        <View>
+          <View style={styles.header}>
+            {userData.avatar ? (
+              <Image source={userData.avatar} />
+            ) : (
+              <PersonIcon name="person" size={90} style={styles.defaultPhoto} />
+            )}
+            <Text style={{color: 'black', fontSize: 20}}>{userData.name}</Text>
+          </View>
+          <View style={styles.addressView}>
+            <View style={styles.addressHeader}>
+              <Text style={{fontSize: 20}}>Address</Text>
+              <Pressable onPress={handleEditAddress}>
+                <EditIcon name="edit" size={25} />
+              </Pressable>
+            </View>
+            <Text>
+              {userData.address?.Local}-{userData.address?.Ward},
+              {userData.address?.TollName},{userData.address?.District}
+            </Text>
+          </View>
+          <View style={styles.dataContainer}>
+            <Pressable onPress={handleLogout}>
+              <Text style={styles.dataView}>Logout</Text>
+            </Pressable>
+          </View>
         </View>
-        <Text>
-          {userData.address?.Local}-{userData.address?.Ward},
-          {userData.address?.TollName},{userData.address?.District}
-        </Text>
-      </View>
-      <View style={styles.dataContainer}>
-        <Text style={styles.dataView}>My Orders</Text>
-        <Pressable onPress={handleLogout}>
-          <Text style={styles.dataView}>Logout</Text>
-        </Pressable>
-      </View>
+      )}
     </View>
   );
 };
