@@ -33,7 +33,6 @@ const Cart = () => {
       setIsLoading(true);
       try {
         const token = await AsyncStorage.getItem('authToken');
-        console.log(SERVER_PORT);
 
         const cartInfo = await axios.get(
           `${BASE_URL}:${SERVER_PORT}/cart/get`,
@@ -44,7 +43,7 @@ const Cart = () => {
           },
         );
         const carts = await cartInfo.data;
-        console.log(carts);
+
         setCartItems(carts);
       } catch (error) {
         console.error('Error fetching cart:', error);

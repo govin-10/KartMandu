@@ -15,8 +15,6 @@ export default function PayUI({payAmount, ItemDetails}) {
   const navigation = useNavigation();
   const {confirmPayment} = useStripe();
   const [cardInfo, setCardInfo] = useState(null);
-  console.log('ppp', payAmount);
-  console.log('iii', ItemDetails);
   const fetchCardDetail = cardDetail => {
     // console.log("my card details",cardDetail)
     if (cardDetail.complete) {

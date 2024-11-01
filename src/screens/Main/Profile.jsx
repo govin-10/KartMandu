@@ -30,7 +30,7 @@ const Profile = () => {
     const fetchUserData = async () => {
       try {
         setIsLoading(true);
-        console.log(BASE_URL);
+
         const token = await AsyncStorage.getItem('authToken');
         const userDatas = await axios.get(
           `${BASE_URL}:${SERVER_PORT}/users/profile`,

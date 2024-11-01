@@ -36,7 +36,7 @@ const EditAddress = () => {
 
   const handleSubmit = () => {
     // Handle form submission here (e.g., send data to backend)
-    console.log('Address data:', addressData);
+
     const updateAddress = async () => {
       const token = await AsyncStorage.getItem('authToken');
       await axios

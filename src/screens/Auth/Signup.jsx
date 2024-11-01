@@ -51,7 +51,7 @@ const SignUpScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={styles.inner}>
-        <Text style={styles.logo}>Your Logo</Text>
+        <Text style={styles.logo}>KartMandu</Text>
         <Text style={styles.signUpMessage}>Sign Up for an Account</Text>
         <TextInput
           style={styles.input}

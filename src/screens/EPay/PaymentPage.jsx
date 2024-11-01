@@ -10,8 +10,7 @@ const PaymentPage = () => {
   const items = route.params;
   const {cartItems} = route.params;
   const {totalAmount} = route.params;
-  console.log(totalAmount);
-  console.log('from payment:', cartItems);
+
   return (
     <View style={styles.pageWrapper}>
       <StripeProvider publishableKey={PUBLISHABLE_KEY}>

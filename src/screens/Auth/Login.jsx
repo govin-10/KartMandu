@@ -19,7 +19,6 @@ const LoginScreen = ({navigation}) => {
   const [password, setPassword] = useState('');
 
   useEffect(() => {
-    console.log('rr', BASE_URL);
     const checkAuthToken = async () => {
       const token = await AsyncStorage.getItem('authToken');
 
@@ -41,7 +40,7 @@ const LoginScreen = ({navigation}) => {
         email,
         password,
       };
-      console.log(loginData);
+
       await axios
         .post(`${BASE_URL}:${SERVER_PORT}/users/login`, loginData)
         .then(resp => {
@@ -85,7 +84,7 @@ const LoginScreen = ({navigation}) => {
       onPress={Keyboard.dismiss}>
       <View style={styles.outer}>
         <View style={styles.inner}>
-          <Text style={styles.logo}>Your Logo</Text>
+          <Text style={styles.logo}>KartMandu</Text>
           <Text style={styles.loginMessage}>Login to your account</Text>
           <TextInput
             style={styles.input}
